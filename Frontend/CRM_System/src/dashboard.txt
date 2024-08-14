@@ -1,0 +1,141 @@
+import React, { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { PieChart } from '@mui/x-charts/PieChart'
+import { BarChart } from '@mui/x-charts/BarChart'
+import { axisClasses } from '@mui/x-charts/ChartsAxis'
+import { closedSalesContext } from '../Contexts/closedSalesContext'
+
+const months = {
+    '1': 'January',
+    '2': 'February',
+    '3': 'March',
+    '4': 'April',
+    '5': 'May',
+    '6': 'June',
+    '7': 'July',
+    '8': 'August',
+    '9': 'September',
+    '10': 'October',
+    '11': 'November',
+    '12': 'December',
+}
+
+const chartSetting = {
+    yAxis: [
+        {
+            label: 'Customers',
+        },
+    ],
+    width: 500,
+    height: 300,
+    sx: {
+        [`.${axisClasses.left} .${axisClasses.label}`]: {
+            transform: 'translate(-20px, 0)',
+        },
+    },
+}
+
+export default function Dashboard() {
+    const navigate = useNavigate()
+    
+    const { closedSales, setClosedSales } = useContext(closedSalesContext)
+    
+    const [monthToString, setMonthToString] = useState([])
+    
+    function changeMonthToString(){
+        for(let i = 0; i < closedSales?.length; i++){
+            let month = JSON.stringify(closedSales[i].month)
+            const appendedSaleMonth = {
+                month: months[month],
+                year: closedSales[i].year
+            }
+            monthToString.push(appendedSaleMonth)    
+        }
+    }
+    changeMonthToString()
+
+    // useEffect(() => {
+    //     function changeMonthToString(){
+    //         setMonthToString([...closedSales?.map(sale => {
+    //             let month = JSON.stringify(sale.month)
+    //             // console.log(month);
+    //             // console.log(months[month]);
+    //             const appendedSaleMonth = {
+    //                 month: months[month],
+    //                 year: sale.year
+    //             }
+    //             return appendedSaleMonth
+    //         })])
+    //         console.log(monthToString);
+    //     }
+    //     changeMonthToString()
+    // }, [])   
+
+/*
+    setMonthToString([...closedSales?.map(sale => {
+        let month = JSON.stringify(sale.month)
+        // console.log(month);
+        // console.log(months[month]);
+        const appendedSaleMonth = {
+            month: months[month],
+            year: sale.year
+            }
+            return appendedSaleMonth
+    })])
+*/
+
+    // const dataset = [...monthToString]
+    const dataset = [
+        {month: 'Jan'},
+        {month: 'Feb'},
+        {month: 'Mar'},
+        {month: 'Apr'},
+        {month: 'May'},
+        {month: 'Jun'},
+        {month: 'Jul'},
+        {month: 'Aug'},
+        {month: 'Sep'},
+        {month: 'Oct'},
+        {month: 'Nov'},
+        {month: 'Dec'}
+    ]
+
+    // const valueFormatter = (value) => {}
+
+    function valueFormatter(){
+        dataset?.forEach(el => {
+            el.month
+        })
+    }
+
+    return (
+        <div>
+            {/* <BarChart
+                dataset={dataset}
+                xAxis={[{ scaleType: 'band', dataKey: 'month' }]}
+                series={[
+                    { dataKey: 'Joined', label: 'Joined', valueFormatter },
+                    { dataKey: 'Left', label: 'Left', valueFormatter },
+                ]}
+                {...chartSetting}
+            /> */}
+            <button onClick={() => {navigate('/customers')}}>Customers</button>
+            <button onClick={() => {navigate('/sales')}}>Sales</button>
+            <button onClick={() => {navigate('/tasks')}}>Tasks</button>
+        </div>
+    )
+}
+
+
+
+    function CustomTooltip({ payload, label, active }) {
+        if (active) {
+          return (
+            <div className="custom-tooltip">
+              <p className="intro">Customers joined in: {label}</p>
+              <p className="label">{`${label} : ${payload[0].value}`}</p>
+              <p className="desc">Anything you want can be displayed here.</p>
+            </div>
+          );
+        }
+    }
