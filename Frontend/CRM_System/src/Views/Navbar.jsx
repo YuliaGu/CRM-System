@@ -9,12 +9,13 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-
-{/* <div style={{display: 'flex', flexDirection: 'row'}}> */}
-{/* </div> */}
+import { useContext } from 'react'
+import { isLogedinContext } from '../Contexts/isLogedinContext'
 
 export default function NavBar() {  
     const { state } = useLocation()
+
+    const {isLogedin} = useContext(isLogedinContext)
 
     return (    
         <Navbar expand="lg" sticky='top' data-bs-theme="dark" className="bg-body-tertiary">
@@ -26,9 +27,8 @@ export default function NavBar() {
                     <Nav.Link href="#home">Home</Nav.Link>
                     <Nav.Link href="#link">Link</Nav.Link>
                 </Nav>
-                {console.log(state?.isLogedin)}
-                {state?.isLogedin && <Nav>
-                    <NavDropdown title={state.name} id="basic-nav-dropdown">
+                {isLogedin && <Nav> 
+                    <NavDropdown title={state?.name} id="basic-nav-dropdown">
                         <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
                         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>

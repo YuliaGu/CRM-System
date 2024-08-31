@@ -2,12 +2,13 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import { Authentication } from './Views/Authentication'
+import { isLogedinContext } from './Contexts/isLogedinContext'
 import { customersContext } from './Contexts/customersContext'
 import { salesContext } from './Contexts/salesContext'
 import { tasksContext } from './Contexts/tasksContext'
 import { closedSalesContext } from './Contexts/closedSalesContext'
 import { leftCustomersContext } from './Contexts/leftCustomersContext'
+import { Authentication } from './Views/Authentication'
 import Dashboard from './Views/Dashboard'
 import Customers from './Views/Customers'
 import AddCustomer from './Views/AddCustomer'
@@ -24,6 +25,7 @@ import NavBar from './Views/Navbar'
 
 function App() {
   //initialize from DB with the appropriate customers list to the user that logged in
+  const [isLogedin, setIsLogedin] = useState(false)
   const [customers, setCustomers] = useState([
     {
       fullName: 'Avi Levi',
@@ -87,9 +89,11 @@ function App() {
 
   return (
     <>
-      <NavBar/>
       <br />
       <br />
+      <isLogedinContext.Provider value={{isLogedin, setIsLogedin}}>
+        <NavBar/>
+      
       <customersContext.Provider value={{customers, setCustomers}} >
       <salesContext.Provider value={{sales, setSales}}>
       <tasksContext.Provider value={{tasks, setTasks}}>
@@ -97,20 +101,20 @@ function App() {
       <leftCustomersContext.Provider value={{leftCustomers, setLeftCustomers}}>
 
         <Routes>
-        <Route path='/' element={<Authentication/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
-        <Route path='/customers' element={<Customers/>}/>
-        <Route path='/addCustomer' element={<AddCustomer/>}/>
-        <Route path='/editCustomerCard' element={<EditCustomerCard/>}/>
-        <Route path='/saleCard' element={<SaleCard/>}/>  {/*just for tests */}
-        <Route path='/sales' element={<Sales/>}/>
-        <Route path='/addSale' element={<AddSale/>}/>
-        <Route path='/editSaleCard' element={<EditSaleCard/>}/>
-        <Route path='/tasks' element={<Tasks/>}/>
-        <Route path='/addTask' element={<AddTask/>}/>
-        {/* <Route path='/editCustomerCard' element={<EditCustomerCard/>}/> */}
-        {/* <Route path='/editCustomerCard' element={<EditCustomerCard/>}/> */}
-        {/* <Route path='/editCustomerCard' element={<EditCustomerCard/>}/> */}  
+          <Route path='/' element={<Authentication/>}/>
+          <Route path='/dashboard' element={<Dashboard/>}/>
+          <Route path='/customers' element={<Customers/>}/>
+          <Route path='/addCustomer' element={<AddCustomer/>}/>
+          <Route path='/editCustomerCard' element={<EditCustomerCard/>}/>
+          <Route path='/saleCard' element={<SaleCard/>}/>  {/*just for tests */}
+          <Route path='/sales' element={<Sales/>}/>
+          <Route path='/addSale' element={<AddSale/>}/>
+          <Route path='/editSaleCard' element={<EditSaleCard/>}/>
+          <Route path='/tasks' element={<Tasks/>}/>
+          <Route path='/addTask' element={<AddTask/>}/>
+          {/* <Route path='/editCustomerCard' element={<EditCustomerCard/>}/> */}
+          {/* <Route path='/editCustomerCard' element={<EditCustomerCard/>}/> */}
+          {/* <Route path='/editCustomerCard' element={<EditCustomerCard/>}/> */}  
         </Routes>
 
       </leftCustomersContext.Provider>
@@ -118,6 +122,7 @@ function App() {
       </tasksContext.Provider>
       </salesContext.Provider>
       </customersContext.Provider>
+      </isLogedinContext.Provider>
     </>
   )
 }
